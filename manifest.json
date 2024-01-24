@@ -1,0 +1,17 @@
+{
+  "name": "View Time",
+  "description": "View Time of Total duration ",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["calculate.hour.js"],
+      "matches": ["<all_urls>"],
+      "match_about_blank": true,
+      "all_frames": true
+    }
+  ]
+}
