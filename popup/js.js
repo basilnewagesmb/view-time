@@ -1,12 +1,34 @@
+document.addEventListener("DOMContentLoaded", function () {
+    chrome.tabs.query({ //This method output active URL
+        "active": true,
+        "currentWindow": true,
+        "status": "complete",
+        "windowType": "normal"
+    }, function (tabs) {
+        if (tabs[0].url === "https://timetracker.newagesmb.com/#/yattendance") {
+            const btn = document.querySelector("body > .card-main > button")
+            const out = document.getElementById("workLogContent")
+            btn.addEventListener("click", () => {
+                btn.innerText = "Loading..."
+                chrome.scripting
+                    .executeScript({
+                        target: { tabId: tabs[0].id },
+                        func: Calculate,
+                    })
+                    .then((e) => {
+                        btn.innerText = "Check Now"
+                        out.innerHTML =
+                            `<p class="result">${e?.[0].result}</p>`
+                    });
+            })
+            console.log(tabs);
+        } else {
+            window.open("https://timetracker.newagesmb.com/#/yattendance", "_blank");
+        }
 
 
-window.addEventListener('load', function () {
-    const currentDurationElement = document.querySelector("table > tbody > tr:nth-child(1) > td:nth-child(7)");
-
-    console.log(currentDurationElement);
-})
-
-
+    });
+});
 function Calculate() {
     const currentDurationElement = document.querySelector("body > div:nth-child(2) > div.container.body.ng-scope > div > div > div:nth-child(1) > div.row > div.col-md-12.col-sm-12.col-xs-12 > div > div.x_content > table > tbody > tr:nth-child(1) > td:nth-child(7)");
     const lastLogTimeElement = document.querySelector("body > div:nth-child(2) > div.container.body.ng-scope > div > div > div:nth-child(1) > div.row > div.col-md-12.col-sm-12.col-xs-12 > div > div.x_content > table > tbody > tr:nth-child(1) > td:nth-child(5)");
@@ -40,10 +62,10 @@ function Calculate() {
 
     // Format the logout time
     const formattedLogoutTime = `${adjustedLogoutHours}:${adjustedLogoutMinutes.toString().padStart(2, '0')} ${ampm}`;
+    let remaining = `${remainingHours}h ${remainingMinutesInHours}m`
 
-    return ({
-        isError: currentDurationElement ? true : false,
-        logoutTime: formattedLogoutTime,
-        remaining: `${remainingHours}h ${remainingMinutesInHours}m`
-    });
+    return `Hi, You can leave at ${formattedLogoutTime}, ${remaining} is remaining.`
+
+
+
 }

@@ -1,17 +1,24 @@
 {
-  "name": "View Time",
-  "description": "View Time of Total duration ",
-  "version": "1.0",
   "manifest_version": 3,
-  "action": {
-    "default_popup": "index.html"
+  "name": "View Time",
+  "version": "1.1.0",
+  "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
   },
-  "content_scripts": [
-    {
-      "js": ["calculate.hour.js"],
-      "matches": ["<all_urls>"],
-      "match_about_blank": true,
-      "all_frames": true
-    }
-  ]
+
+  "permissions": ["activeTab", "scripting"],
+
+  "action": {
+    "default_icon": {
+      "16": "icon-16.png",
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    },
+    "default_title": "View Time",
+    "default_popup": "popup/html.html"
+  }
 }
