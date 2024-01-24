@@ -31,10 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function Calculate() {
     const currentDurationElement = document.querySelector("body > div:nth-child(2) > div.container.body.ng-scope > div > div > div:nth-child(1) > div.row > div.col-md-12.col-sm-12.col-xs-12 > div > div.x_content > table > tbody > tr:nth-child(1) > td:nth-child(7)");
+    const entryTimeElement = document.querySelector("body > div:nth-child(2) > div.container.body.ng-scope > div > div > div:nth-child(1) > div.row > div.col-md-12.col-sm-12.col-xs-12 > div > div.x_content > table > tbody > tr:nth-child(1) > td:nth-child(4)");
     const lastLogTimeElement = document.querySelector("body > div:nth-child(2) > div.container.body.ng-scope > div > div > div:nth-child(1) > div.row > div.col-md-12.col-sm-12.col-xs-12 > div > div.x_content > table > tbody > tr:nth-child(1) > td:nth-child(5)");
 
     const currentDuration = currentDurationElement ? currentDurationElement.innerHTML : "0h 0m";
-    const lastLogTime = lastLogTimeElement ? lastLogTimeElement.innerText : "00:00 AM";
+    const lastLogTime = lastLogTimeElement ? lastLogTimeElement.innerText == "0m" ? entryTimeElement.innerHTML : lastLogTimeElement.innerText : "00:00 AM";
 
     // Extract hours and minutes from currentDuration
     const [currentHours, currentMinutes] = currentDuration.match(/\d+/g).map(Number);
@@ -62,10 +63,17 @@ function Calculate() {
 
     // Format the logout time
     const formattedLogoutTime = `${adjustedLogoutHours}:${adjustedLogoutMinutes.toString().padStart(2, '0')} ${ampm}`;
-    let remaining = `${remainingHours}h ${remainingMinutesInHours}m`
 
-    return `Hi, You can leave at ${formattedLogoutTime}, ${remaining} is remaining.`
+    // Get the current time
+    const currentTime = new Date();
+    const currentHoursNow = currentTime.getHours();
+    const currentMinutesNow = currentTime.getMinutes();
 
+    // Calculate the remaining time from current time to logout time
+    const remainingHoursNow = Math.floor((logoutHours - currentHoursNow + 12) % 12);
+    const remainingMinutesNow = (logoutMinutes - currentMinutesNow + 60) % 60;
 
+    let remaining = `${remainingHoursNow}h ${remainingMinutesNow}m`;
 
+    return `Hi, You can leave at ${formattedLogoutTime}, ${remaining} is remaining.`;
 }
