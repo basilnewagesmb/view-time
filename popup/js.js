@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then((e) => {
                         btn.innerText = "Check Now"
                         out.innerHTML =
-                            `<p class="result">${e?.[0].result}</p>`
+                            e?.[0].result ? `<p class="result">${e?.[0].result}</p>` : `<img class="not_fount" src="/not_fount.png" alt="not fount"/>`
                     });
             })
             console.log(tabs);

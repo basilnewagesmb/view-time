@@ -188,3 +188,10 @@ body {
   font-size: 18px;
   font-weight: 500;
 }
+.not_fount {
+  margin-top: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  mix-blend-mode: luminosity;
+}
